@@ -13,6 +13,7 @@ namespace Full_GRASP_And_SOLID
     {
         // Cambiado por OCP
         private IList<BaseStep> steps = new List<BaseStep>();
+        public bool Cooked = false;
 
         public Product FinalProduct { get; set; }
 
@@ -61,6 +62,26 @@ namespace Full_GRASP_And_SOLID
             }
 
             return result;
+        }
+        // Agregado por Expert
+        // Recipe contiene la info del tiempo de los Steps que contiene
+        
+        public int GetCookTime()
+        {
+            int totalTime = 0;
+            foreach (var step in steps)
+            {
+                totalTime += step.Time;
+            }
+            return totalTime;
+        }
+        //
+        public void Cook()
+        {
+            CountdownTimer countdownTimer = new CountdownTimer();
+            RecipeTimerClient RecipeTC = new RecipeTimerClient(this);
+
+            countdownTimer.Register(this.GetCookTime(), RecipeTC);
         }
     }
 }
